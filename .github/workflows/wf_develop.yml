@@ -42,7 +42,7 @@ jobs:
         uses: peterjgrainger/action-create-branch@v2.0.1
         
         env:
-          MERGE_ID: ${{ $((1 + RANDOM % 4123)) }}
+          MERGE_ID: ${{ range(1, 51) | random }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           branch: "release_${{ env.MERGE_ID }}"
