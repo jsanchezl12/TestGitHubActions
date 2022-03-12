@@ -46,7 +46,7 @@ jobs:
         with:
           branch: "${{ env.FOO }}"
   synchronise-release:
-  if: ${{ contains(github.event.head_commit.message, 'RELEASE') }}
+    if: ${{ contains(github.event.head_commit.message, 'RELEASE') }}
     name: merge-release-branch
     runs-on: ubuntu-latest
     steps:
