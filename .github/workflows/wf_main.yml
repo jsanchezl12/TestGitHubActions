@@ -1,4 +1,4 @@
-name: Automerge
+name: WF MAIN
 on:
   push:
     branches: 
