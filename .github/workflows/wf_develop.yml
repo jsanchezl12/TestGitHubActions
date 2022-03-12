@@ -38,11 +38,26 @@ jobs:
       - name: Checkout de repositorio
         uses: actions/checkout@v2
       - name: generate FOO unique variable based on timestamp
-        run: echo FOO=$(date +%s) >> $GITHUB_ENV
+        run: echo FOO=release_$(date +%s) >> $GITHUB_ENV
       - name: create branch
         uses: peterjgrainger/action-create-branch@v2.0.1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          branch: "release_${{ env.FOO }}"
+          branch: "${{ env.FOO }}"
+  automerge:
+    if: ${{ contains(github.event.head_commit.message, 'RELEASE') }}
+    name: merge-branch
+    needs: create-branch
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout de repositorio
+        uses: actions/checkout@v2
+
+      - name: Merge develop -> main
+        uses: devmasx/merge-branch@master
+        with:
+          type: now
+          target_branch: main
+          github_token: ${{ github.token }}
   
