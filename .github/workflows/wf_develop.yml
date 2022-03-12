@@ -45,17 +45,16 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           branch: "${{ env.FOO }}"
-  synchronise-release:
+  merge-branch:
     if: ${{ contains(github.event.head_commit.message, 'RELEASE') }}
-    name: merge-release-branch
     needs: create-branch
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+      - uses: everlytic/branch-merge@1.1.2
         with:
-          ref: "${{ env.FOO }}"
-          fetch-depth: 0
-      - uses: pr-mpt/actions-merge-branch@v2
-        with:
-          from: "origin/main"
+          github_token: ${{ github.token }}
+          source_ref: ${{ env.FOO }}
+          target_branch: 'master'
+          commit_message_template: '[Automated] Merged {source_ref} into target {target_branch}'
   
