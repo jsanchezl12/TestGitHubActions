@@ -1,8 +1,10 @@
-name: WF DEVELOP
+name: WF OTHERS
 on:
   push:
     branches: 
-      - develop 
+      - '*release*'
+      - '!main'
+      - '!develop' 
   pull_request:
     types:
       - labeled
@@ -14,7 +16,9 @@ on:
       - reopened
       - unlocked
     branches: 
-      - develop
+      - '*release*'
+      - '!main'
+      - '!develop'    
 jobs:
   job1:
     name: Pruebas
@@ -29,18 +33,18 @@ jobs:
     - name: Correr pruebas
       id: correr-pruebas
       run: python src/codigo.py
-  create-branch:
-    if: ${{ contains(github.event.head_commit.message, 'RELEASE') }}
-    name: create-release-branch
+  automerge:
+    if: ${{ contains(github.event.head_commit.message, 'MERGE') }}
+    name: merge-branch
     needs: job1
     runs-on: ubuntu-latest
     steps:
       - name: Checkout de repositorio
         uses: actions/checkout@v2
 
-      - name: create branch
-        uses: peterjgrainger/action-create-branch@v2.0.1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Merge release -> master
+        uses: devmasx/merge-branch@master
         with:
-          branch: ${{ 'release_' + $CI_JOB_ID }}
+          type: now
+          target_branch: master
+          github_token: ${{ github.token }}
