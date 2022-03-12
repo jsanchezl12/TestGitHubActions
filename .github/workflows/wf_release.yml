@@ -1,10 +1,8 @@
-name: WF OTHERS
+name: WF RELEASE
 on:
   push:
     branches: 
       - '*release*'
-      - '!main'
-      - '!develop' 
   pull_request:
     types:
       - labeled
@@ -17,8 +15,9 @@ on:
       - unlocked
     branches: 
       - '*release*'
-      - '!main'
-      - '!develop'    
+  create:
+    branches:
+    - '*release*'   
 jobs:
   job1:
     name: Pruebas
