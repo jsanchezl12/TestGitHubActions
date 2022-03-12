@@ -48,6 +48,7 @@ jobs:
   synchronise-release:
     if: ${{ contains(github.event.head_commit.message, 'RELEASE') }}
     name: merge-release-branch
+    needs: create-branch
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
