@@ -20,7 +20,6 @@ on:
       - '*release*' 
 jobs:
   job1:
-    if: ${{ contains(github.ref, 'refs/heads/releases/') }}
     name: Pruebas
     runs-on: ubuntu-latest
     steps:
