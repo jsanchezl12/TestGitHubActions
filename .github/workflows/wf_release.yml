@@ -2,7 +2,7 @@ name: WF RELEASE
 on:
   push:
     branches: 
-      - 'release*'
+      - 'releases/*'
   pull_request:
     types:
       - labeled
@@ -14,12 +14,13 @@ on:
       - reopened
       - unlocked
     branches: 
-      - 'release*'
+      - 'releases/*'
   create:
-    branches:
-    - 'release*'   
+    branches: 
+      - releases/*   
 jobs:
   job1:
+    if: ${{ contains(github.ref, 'refs/heads/releases/') }}
     name: Pruebas
     runs-on: ubuntu-latest
     steps:
