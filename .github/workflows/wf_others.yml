@@ -1,0 +1,61 @@
+name: WF OTHERS
+on:
+  push:
+    branches: 
+      - '**'
+      - '!main'
+      - '!develop' 
+  pull_request:
+    types:
+      - labeled
+      - unlabeled
+      - synchronize
+      - opened
+      - edited
+      - ready_for_review
+      - reopened
+      - unlocked
+    branches: 
+      - '**'
+      - '!main'
+      - '!develop'     
+jobs:
+  job1:
+    name: Pruebas
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout de repositorio
+      uses: actions/checkout@v2
+    - name: Configuración de entorno de python
+      uses: actions/setup-python@v2
+      with:
+          python-version: '3.7'
+    - name: Correr pruebas
+      id: correr-pruebas
+      run: python src/codigo.py
+  create_pullrqst:
+    name: CreatePullRequest_Develop
+    needs: job1
+    runs-on: ubuntu-latest
+    steps:
+      - name: checking out code
+        uses: actions/checkout@v2
+
+      - name: extract git commit data
+        uses: rlespinasse/git-commit-data-action@v1.x
+
+      - name: Update author information
+        run: echo ${{ env.GIT_COMMIT_AUTHOR_NAME }} > AUTHOR
+
+      - name: CPR
+        uses: peter-evans/create-pull-request@v3
+        with:
+          branch: "auto-pr-branch"
+          base: develop
+          title: "Auto Pull Request "
+          committer: ${{ env.GIT_COMMIT_AUTHOR_NAME }} <${{ env.GIT_COMMIT_AUTHOR_EMAIL }}">
+          author: ${{ env.GIT_COMMIT_AUTHOR_NAME }} <${{ env.GIT_COMMIT_AUTHOR_EMAIL }}">
+          body:
+            esto es un pr automatico
+          token: ${{ secrets.GITHUB_TOKEN }}
+          delete-branch: true
