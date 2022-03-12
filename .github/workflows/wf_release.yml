@@ -1,8 +1,11 @@
 name: WF RELEASE
 on:
+  create:
+    branches: 
+      - '*release*' 
   push:
     branches: 
-      - 'release*'
+      - '*release*'
   pull_request:
     types:
       - labeled
@@ -14,10 +17,7 @@ on:
       - reopened
       - unlocked
     branches: 
-      - 'release*'
-  create:
-    branches:
-    - 'release*'   
+      - '*release*' 
 jobs:
   job1:
     name: Pruebas
