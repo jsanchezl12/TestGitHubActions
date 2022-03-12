@@ -1,5 +1,8 @@
 name: WF RELEASE
 on:
+  create:
+    branches: 
+      - '*release*' 
   push:
     branches: 
       - '*release*'
@@ -14,10 +17,7 @@ on:
       - reopened
       - unlocked
     branches: 
-      - '*release*'
-  created:
-    branches: 
-      - '*release*'  
+      - '*release*' 
 jobs:
   job1:
     if: ${{ contains(github.ref, 'refs/heads/releases/') }}

@@ -4,7 +4,7 @@ on:
     branches: 
       - '**'
       - '!main'
-      - '!develop' 
+      - '!develop_2' 
   pull_request:
     types:
       - labeled
@@ -18,7 +18,7 @@ on:
     branches: 
       - '**'
       - '!main'
-      - '!develop'     
+      - '!develop_2'     
 jobs:
   job1:
     name: Pruebas
